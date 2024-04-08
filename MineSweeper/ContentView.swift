@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     @State private var numRows = 5
     @State private var numCols = 5
+    @State private var numMines = 24
+    @State private var gameOn = false
     @State private var hiddenButtons: Set<Int> = []
     var body: some View {
         VStack {
@@ -32,7 +34,9 @@ struct ContentView: View {
                         .scaledToFit()
                 })
                 .buttonStyle(MineSweeperButtonStyle())
-                //TODO: Add the mine counter
+                
+                mineCount(count: numMines)
+                
                 Button(action: {
                     
                 }, label: {
@@ -41,7 +45,10 @@ struct ContentView: View {
                         .scaledToFit()
                 })
                 .buttonStyle(MineSweeperButtonStyle())
-                //TODO: Add a live clock
+                
+                mineClock(gameRunning: gameOn)
+                // TODO: Conditional around when the game is running
+                
                 Button(action: {
                     
                 }, label: {
@@ -96,6 +103,8 @@ struct ContentView: View {
 }
 
 
+
+
 struct MineSweeperButtonStyle : ButtonStyle
 {
     func makeBody(configuration: Configuration) -> some View {
@@ -111,6 +120,73 @@ struct MineSweeperButtonStyle : ButtonStyle
             .opacity(configuration.isPressed ? 0.5 : 1.0)
     }
 }
+
+struct mineCount : View
+{
+    let count: Int
+    
+    var body: some View
+    {
+        Text("\(count)")
+            .padding(5)
+            .frame(width: 75, height: 29)
+            .background(Color.gray)
+            .cornerRadius(5)
+            .foregroundColor(.red)
+            .font(.system(size: 20, weight: .bold, design: .monospaced))
+            .multilineTextAlignment(.center)
+            .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.black))
+    }
+}
+
+struct mineClock : View
+{
+    let gameRunning: Bool
+    @State private var currentTime: Int = 0
+    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    //got some of this logic from chatgpt
+    
+    var body : some View
+    {
+        VStack
+        {
+            
+            Text("\(formattedTime(currentTime))")
+                .padding(5)
+                .frame(width: 75, height: 29)
+                .background(Color.gray)
+                .cornerRadius(5)
+                .foregroundColor(.red)
+                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                .multilineTextAlignment(.center)
+                .overlay(RoundedRectangle(cornerRadius: 2).stroke(Color.black))
+            
+            
+        }
+        .onReceive(timer) { _ in
+            if self.gameRunning {
+                self.currentTime += 1
+            } else
+            {
+                self.currentTime = 0
+            }
+        }
+    }
+    func formattedTime(_ time: Int) -> String
+    {
+        let seconds = time % 60
+        return String(seconds)
+    }
+    
+    func getTime() -> Int
+    {
+        return self.currentTime
+    }
+    
+}
+
+
 
 #Preview {
     ContentView()
