@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C023EAA2BC62E0400D2FC5B /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C023EA92BC62E0400D2FC5B /* LevelView.swift */; };
+		2C023EAC2BC6DF5700D2FC5B /* winView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C023EAB2BC6DF5700D2FC5B /* winView.swift */; };
 		2C55965C2BC57ECB00D4BC0A /* endView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C55965B2BC57ECB00D4BC0A /* endView.swift */; };
 		2CDD6F012BBB266B0063B2B7 /* MineSweeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDD6F002BBB266B0063B2B7 /* MineSweeperApp.swift */; };
 		2CDD6F032BBB266B0063B2B7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDD6F022BBB266B0063B2B7 /* ContentView.swift */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C023EA92BC62E0400D2FC5B /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
+		2C023EAB2BC6DF5700D2FC5B /* winView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = winView.swift; sourceTree = "<group>"; };
 		2C55965B2BC57ECB00D4BC0A /* endView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = endView.swift; sourceTree = "<group>"; };
 		2CDD6EFD2BBB266B0063B2B7 /* MineSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MineSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CDD6F002BBB266B0063B2B7 /* MineSweeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineSweeperApp.swift; sourceTree = "<group>"; };
@@ -55,7 +59,9 @@
 			children = (
 				2CDD6F002BBB266B0063B2B7 /* MineSweeperApp.swift */,
 				2CDD6F022BBB266B0063B2B7 /* ContentView.swift */,
+				2C023EAB2BC6DF5700D2FC5B /* winView.swift */,
 				2C55965B2BC57ECB00D4BC0A /* endView.swift */,
+				2C023EA92BC62E0400D2FC5B /* LevelView.swift */,
 				2CDD6F042BBB266E0063B2B7 /* Assets.xcassets */,
 				2CDD6F062BBB266E0063B2B7 /* Preview Content */,
 			);
@@ -141,6 +147,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CDD6F032BBB266B0063B2B7 /* ContentView.swift in Sources */,
+				2C023EAA2BC62E0400D2FC5B /* LevelView.swift in Sources */,
+				2C023EAC2BC6DF5700D2FC5B /* winView.swift in Sources */,
 				2C55965C2BC57ECB00D4BC0A /* endView.swift in Sources */,
 				2CDD6F012BBB266B0063B2B7 /* MineSweeperApp.swift in Sources */,
 			);
@@ -284,7 +292,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -314,7 +322,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

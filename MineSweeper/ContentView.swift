@@ -11,39 +11,423 @@ import Combine
 struct ContentView: View {
     @State private var numRows = 5
     @State private var numCols = 5
-    @State private var numMines = 24
+    @State private var numMines = 10
     @State private var gameOn = true
     @State private var hiddenButtons: Set<Int> = []
-    @State private var gridSize = 9
+    @State private var gridSize = 7
     @State private var minesweeperBoard: MinesweeperBoard?
     @State private var showEndScreen = false
+    @State private var isShowingLevelPicker = false
+    @State private var easyImage = ""
+    @State private var mediumImage = ""
+    @State private var hardImage = ""
+    @State private var extremeImage = ""
+    @State private var gameWon = false
+    @State private var showWinScreen = false
     
 
     var body: some View {
         ZStack {
-           VStack {
-               header(numMines: numMines, gameOn: gameOn)
-               Spacer()
-               
-               VStack
-               {
-                   if let minesweeperBoard = minesweeperBoard {
-                       MinesweeperGridView(minesweeperBoard: minesweeperBoard)
-                           .onReceive(minesweeperBoard.$gameOver) { gameOver in
-                               if gameOver {
-                                   showEndScreen = true
-                                   gameOn = false
-                                   // Set showEndScreen to true when gameOver is received
-                               }
-                           }
-                           .frame(width: UIScreen.screenWidth, height: 600)
-                   }
-               }
-               .border(Color(.blue))
-               Spacer()
-          }
-           
-          
+            VStack {
+                HStack
+                {
+                    Button(action: {
+                        //TODO: Switch to flag mode
+                    }, label: {
+                        Image("flag")
+                            .resizable()
+                            .scaledToFit()
+                    })
+                    .buttonStyle(MineSweeperButtonStyle())
+                    Button(action: {
+                        //TODO: Hint button, probably won't implement this
+                    }, label: {
+                        Image("lightbulb")
+                            .resizable()
+                            .scaledToFit()
+                    })
+                    .buttonStyle(MineSweeperButtonStyle())
+                    
+                    mineCount(count: numMines)
+                    
+                    Button(action: {
+                        self.isShowingLevelPicker.toggle()
+                    }) {
+                        Image("smiley")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    .buttonStyle(MineSweeperButtonStyle())
+                
+                mineClock(gameRunning: gameOn)
+                // TODO: Conditional around when the game is running
+                
+                Button(action: {
+                    
+                }, label: {
+                    Image("gear")
+                        .resizable()
+                        .scaledToFit()
+                })
+                .buttonStyle(MineSweeperButtonStyle())
+                Button(action: {
+                    
+                }, label: {
+                    Image("fullscreen")
+                        .resizable()
+                        .scaledToFit()
+                })
+                .buttonStyle(MineSweeperButtonStyle())
+                
+                
+            }
+            .frame(width: 350, height: 50)
+            
+            
+            Spacer()
+            
+            VStack
+            {
+                if let minesweeperBoard = minesweeperBoard {
+                    MinesweeperGridView(minesweeperBoard: minesweeperBoard)
+                        .onReceive(minesweeperBoard.$gameOver) { gameOver in
+                            if gameOver {
+                                showEndScreen = true
+                                gameOn = false
+                                // Set showEndScreen to true when gameOver is received
+                            }
+                        }
+                        .onReceive(minesweeperBoard.$gameWon) { gameWon in
+                           if gameWon {
+                                showEndScreen = false
+                                gameOn = false
+                                showWinScreen = true
+                                       
+                            }
+                        }
+                        .frame(width: UIScreen.screenWidth, height: 600)
+                }
+            }
+            
+            Spacer()
+        }
+          if isShowingLevelPicker
+            {
+              VStack
+              {
+                  
+                  HStack
+                  {
+                      Spacer()
+                      
+                      Image("happy")
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 40, height: 40)
+                      
+                      Spacer()
+                      
+                      Text("New Game")
+                          .fontWeight(.bold)
+                      
+                      Spacer()
+                      
+                      Image("sad")
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 40, height: 40)
+                      
+                      Spacer()
+                  }
+                  
+                  .frame(width: 350, height: 50)
+                  .background(Color.lightGray)
+                  .overlay(
+                      RoundedRectangle(cornerRadius: 0)
+                          .stroke(lineWidth: 3)
+                          .foregroundColor(.white)
+                          .shadow(color: .black, radius: 3, x:2, y: 2)
+                  )
+                  
+                  Spacer()
+                  
+                  VStack
+                  {
+                      Spacer()
+                     VStack
+                      {
+                          Button(action: {
+                              gridSize = 7
+                              numMines = 10
+                              easyImage = "bomb"
+                              mediumImage = ""
+                              hardImage = ""
+                              extremeImage = ""
+                              gameOn = false
+                          }, label: {
+                              HStack
+                              {
+                                  Spacer()
+                                  
+                                  Image(easyImage)
+                                      .resizable()
+                                      .scaledToFit()
+                                      .frame(width: 40, height: 40)
+                                  
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  
+                                  VStack
+                                  {
+                                      Text("Easy")
+                                      Text("7x7 10 mines")
+                                  }
+                                  .foregroundColor(.black)
+                                  .fontWeight(.bold)
+                                  
+                                  Spacer()
+                              }
+                              .frame(width: 315, height: 50)
+                              .background(Color.lightGray)
+                              .overlay(
+                                  RoundedRectangle(cornerRadius: 0)
+                                      .stroke(lineWidth: 3)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black, radius: 3, x:2, y: 2)
+                                  )
+                          })
+                          
+                          Button(action: {
+                              gridSize = 8
+                              numMines = 10
+                              mediumImage = "bomb"
+                              easyImage = ""
+                              hardImage = ""
+                              extremeImage = ""
+                              gameOn = false
+                          }, label: {
+                              HStack
+                              {
+                                  Spacer()
+                                  
+                                  Image(mediumImage)
+                                      .resizable()
+                                      .scaledToFit()
+                                      .frame(width: 40, height: 40)
+                                  
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  
+                                  VStack
+                                  {
+                                      Text("Medium")
+                                      Text("8x8 10 mines")
+                                  }
+                                  .foregroundColor(.black)
+                                  .fontWeight(.bold)
+                                  
+                                  Spacer()
+                              }
+                              .frame(width: 315, height: 50)
+                              .background(Color.lightGray)
+                              .overlay(
+                                  RoundedRectangle(cornerRadius: 0)
+                                      .stroke(lineWidth: 3)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black, radius: 3, x:2, y: 2)
+                                  )
+                          })
+                          
+                          Button(action: {
+                              gridSize = 9
+                              numMines = 10
+                              mediumImage = ""
+                              easyImage = ""
+                              hardImage = "bomb"
+                              extremeImage = ""
+                              gameOn = false
+                          }, label: {
+                              HStack
+                              {
+                                  Spacer()
+                                  
+                                  Image(hardImage)
+                                      .resizable()
+                                      .scaledToFit()
+                                      .frame(width: 40, height: 40)
+                                  
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  
+                                  VStack
+                                  {
+                                      Text("Hard")
+                                      Text("9x9 10 mines")
+                                  }
+                                  .foregroundColor(.black)
+                                  .fontWeight(.bold)
+                                  
+                                  Spacer()
+                              }
+                              .frame(width: 315, height: 50)
+                              .background(Color.lightGray)
+                              .overlay(
+                                  RoundedRectangle(cornerRadius: 0)
+                                      .stroke(lineWidth: 3)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black, radius: 3, x:2, y: 2)
+                                  )
+                          })
+                          
+                          Button(action: {
+                              gridSize = 10
+                              numMines = 10
+                              mediumImage = ""
+                              easyImage = ""
+                              hardImage = ""
+                              extremeImage = "bomb"
+                              gameOn = false
+                          }, label: {
+                              HStack
+                              {
+                                  Spacer()
+                                  
+                                  Image(extremeImage)
+                                      .resizable()
+                                      .scaledToFit()
+                                      .frame(width: 40, height: 40)
+                                  
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  Spacer()
+                                  
+                                  VStack
+                                  {
+                                      Text("Hard")
+                                      Text("10x10 10 mines")
+                                  }
+                                  .foregroundColor(.black)
+                                  .fontWeight(.bold)
+                                  
+                                  Spacer()
+                              }
+                              .frame(width: 315, height: 50)
+                              .background(Color.lightGray)
+                              .overlay(
+                                  RoundedRectangle(cornerRadius: 0)
+                                      .stroke(lineWidth: 3)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black, radius: 3, x:2, y: 2)
+                                  )
+                          })
+                      }
+                      
+                      Spacer()
+                      Spacer()
+                      Spacer()
+                      Spacer()
+                      
+                      HStack
+                      {
+                          Spacer()
+                          
+                          Button(action: {
+                              isShowingLevelPicker = false
+                          }, label: {
+                              Image("x")
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(width: 50, height: 50)
+                                  .overlay(
+                                      RoundedRectangle(cornerRadius: 0)
+                                          .stroke(lineWidth: 3)
+                                          .foregroundColor(.white)
+                                          .shadow(color: .black, radius: 3, x:2, y: 2)
+                                      )
+                          })
+                          
+                          Spacer()
+                          
+                          Button(action: {
+                              gameOn = true
+                              isShowingLevelPicker = false
+                              showEndScreen = false
+                              startGame(gridSize: gridSize)
+                          }, label: {
+                              HStack
+                              {
+                                  Spacer()
+                                  
+                                  Text("Start")
+                                      .fontWeight(.bold)
+                                      .foregroundStyle(Color.black)
+                                  
+                                  Spacer()
+                                  
+                                  Image("check")
+                                      .resizable()
+                                      .scaledToFit()
+                                      .frame(width: 50, height: 50)
+                              }
+                              .frame(width: 120, height: 50)
+                              .overlay(
+                                  RoundedRectangle(cornerRadius: 0)
+                                      .stroke(lineWidth: 3)
+                                      .foregroundColor(.white)
+                                      .shadow(color: .black, radius: 3, x:2, y: 2)
+                                  )
+                                 
+                          })
+                          
+                          Spacer()
+                          
+                          Button(action: {
+                              // do nothing
+                          }, label: {
+                              Image("calendar")
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(width: 50, height: 50)
+                                  .overlay(
+                                      RoundedRectangle(cornerRadius: 0)
+                                          .stroke(lineWidth: 3)
+                                          .foregroundColor(.white)
+                                          .shadow(color: .black, radius: 3, x:2, y: 2)
+                                      )
+                          })
+                          
+                          Spacer()
+                      }
+                      Spacer()
+                  }
+                  .frame(width: 350, height: 500)
+                  .background(Color.lightGray)
+                  .overlay(
+                      RoundedRectangle(cornerRadius: 0)
+                          .stroke(lineWidth: 3)
+                          .foregroundColor(.white)
+                          .shadow(color: .black, radius: 3, x:2, y: 2)
+                      )
+                  
+              }
+              .frame(width: 400, height: 400)
+            }
+            
           if showEndScreen {
               VStack
               {
@@ -222,7 +606,7 @@ struct ContentView: View {
                               Spacer()
                               
                               Button(action: {
-                                  //TODO: Store page (prob not gunna do rn)
+                                  showEndScreen = false
                               }, label: {
                                   
                                   Image("eye")
@@ -266,6 +650,11 @@ struct ContentView: View {
                       showEndScreen = false // Reset showEndScreen when the end screen disappears
               }
           }
+            
+          if showWinScreen
+            {
+              //TODO: win screen
+            }
       }
       .onAppear {
           startGame(gridSize: gridSize)
@@ -284,69 +673,7 @@ extension UIScreen{
    static let screenSize = UIScreen.main.bounds.size
 }
 
-struct header : View
-{
-    let numMines: Int
-    let gameOn: Bool
-    
-    var body : some View
-    {
-        HStack
-        {
-            Button(action: {
-                //TODO: Switch to flag mode
-            }, label: {
-                Image("flag")
-                    .resizable()
-                    .scaledToFit()
-            })
-            .buttonStyle(MineSweeperButtonStyle())
-            Button(action: {
-                //TODO: Hint button, probably won't implement this
-            }, label: {
-                Image("lightbulb")
-                    .resizable()
-                    .scaledToFit()
-            })
-            .buttonStyle(MineSweeperButtonStyle())
-            
-            mineCount(count: numMines)
-            
-            Button(action: {
-               
-            }, label: {
-                Image("smiley")
-                    .resizable()
-                    .scaledToFit()
-            })
-            .buttonStyle(MineSweeperButtonStyle())
-            
-            mineClock(gameRunning: gameOn)
-            // TODO: Conditional around when the game is running
-            
-            Button(action: {
-                
-            }, label: {
-                Image("gear")
-                    .resizable()
-                    .scaledToFit()
-            })
-            .buttonStyle(MineSweeperButtonStyle())
-            Button(action: {
-                
-            }, label: {
-                Image("fullscreen")
-                    .resizable()
-                    .scaledToFit()
-            })
-            .buttonStyle(MineSweeperButtonStyle())
-            
-            
-        }
-        .frame(width: 350, height: 50)
-        .border(Color(.blue))
-    }
-}
+
 
 struct Cell {
     var isMine: Bool
@@ -365,13 +692,13 @@ struct MinesweeperGridViewWrapper: View {
 class MinesweeperBoard: ObservableObject {
     
     @Published var gameOver: Bool = false
+    @Published var gameWon: Bool = false
 
     var gameOverHandler: (() -> Void)?
+    var gameWonHandler: (() -> Void)? // Add gameWonHandler
     
-    func getGameOverCondition()
-    {
-        if gameIsOver
-        {
+    func getGameOverCondition() {
+        if gameIsOver {
             gameOverHandler?()
         }
     }
@@ -422,8 +749,7 @@ class MinesweeperBoard: ObservableObject {
         }
     }
     
-    private func revealAllMines()
-    {
+    private func revealAllMines() {
         for row in 0..<gridSize {
             for col in 0..<gridSize {
                 if cells[row][col].isMine {
@@ -432,7 +758,7 @@ class MinesweeperBoard: ObservableObject {
             }
         }
     }
-
+    
     func revealCell(at index: Int) {
         let row = index / gridSize
         let col = index % gridSize
@@ -442,16 +768,16 @@ class MinesweeperBoard: ObservableObject {
             gameIsOver = true
             self.gameOver = true
             revealAllMines()
-            
-            
         } else {
             cells[row][col].isRevealed = true
             if cells[row][col].adjacentMines == 0 {
                 revealAdjacentCells(row: row, col: col)
             }
         }
+        
+        checkGameWon()
     }
-
+    
     private func revealAdjacentCells(row: Int, col: Int) {
         for i in -1...1 {
             for j in -1...1 {
@@ -466,7 +792,26 @@ class MinesweeperBoard: ObservableObject {
             }
         }
     }
+    
+    private func checkGameWon() {
+        var remainingCellsCount = 0
+        
+        for row in 0..<gridSize {
+            for col in 0..<gridSize {
+                if !cells[row][col].isMine && !cells[row][col].isRevealed {
+                    remainingCellsCount += 1
+                }
+            }
+        }
+        
+        if remainingCellsCount == 0 {
+            gameWon = true
+            gameWonHandler?() // Notify the game won
+        }
+    }
 }
+
+
 
 struct MinesweeperGridView: View {
     @ObservedObject var minesweeperBoard: MinesweeperBoard
@@ -624,32 +969,6 @@ struct mineClock : View
     }
     
 }
-
-struct settingsView : View
-{
-    var body : some View
-    {
-        VStack
-        {
-            
-        }
-    }
-}
-
-struct levelPicker : View
-{
-    var updateGrid: (Int) -> Void
-    
-    var body : some View
-    {
-        Button(action: {
-            updateGrid(10)
-        }, label: {
-            /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-        })
-    }
-}
-
 
 
 
