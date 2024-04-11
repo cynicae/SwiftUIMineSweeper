@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFAudio
 
 struct ContentView: View {
     @State private var numRows = 5
@@ -24,6 +25,8 @@ struct ContentView: View {
     @State private var extremeImage = ""
     @State private var gameWon = false
     @State private var showWinScreen = false
+
+    
     
 
     var body: some View {
@@ -665,6 +668,8 @@ struct ContentView: View {
     {
         minesweeperBoard = MinesweeperBoard(gridSize: gridSize)
     }
+    
+    
 }
 
 extension UIScreen{
@@ -693,7 +698,7 @@ class MinesweeperBoard: ObservableObject {
     
     @Published var gameOver: Bool = false
     @Published var gameWon: Bool = false
-
+    
     var gameOverHandler: (() -> Void)?
     var gameWonHandler: (() -> Void)? // Add gameWonHandler
     
@@ -809,12 +814,16 @@ class MinesweeperBoard: ObservableObject {
             gameWonHandler?() // Notify the game won
         }
     }
+    
+    
 }
 
 
 
 struct MinesweeperGridView: View {
     @ObservedObject var minesweeperBoard: MinesweeperBoard
+    
+    @State private var audioPlayer: AVAudioPlayer!
     
     var body: some View {
         VStack(spacing: 5) {
@@ -828,6 +837,7 @@ struct MinesweeperGridView: View {
                         
                         Button(action: {
                             self.minesweeperBoard.revealCell(at: index)
+                            self.buttonTapped(index: index)
                         }) {
                             if cell.isRevealed {
                                 if cell.isMine {
@@ -835,6 +845,7 @@ struct MinesweeperGridView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 30, height: 30)
+                                
                                     //TODO: Bomb sound
                                 } else {
                                     Text("\(cell.adjacentMines)")
@@ -853,6 +864,33 @@ struct MinesweeperGridView: View {
             }
         }
         .frame(width: UIScreen.screenWidth)
+    }
+    
+    func buttonTapped(index: Int) {
+            minesweeperBoard.revealCell(at: index)
+            let cell = minesweeperBoard.cells[index / minesweeperBoard.gridSize][index % minesweeperBoard.gridSize]
+            if cell.isRevealed && cell.isMine {
+                playSound(soundName: "bombSound")
+            } else {
+                playSound(soundName: "clickSound")
+            }
+        }
+    
+    func playSound(soundName: String)
+    {
+        guard let soundFile = NSDataAsset(name: soundName) else
+        {
+            print("😡 Could not read file: \(soundName)")
+            return
+        }
+        do
+        {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer?.play()
+        } catch
+        {
+            print("Error: \(error.localizedDescription) creating audioPlayer.")
+        }
     }
     
     func textColor(for number: Int) -> Color {

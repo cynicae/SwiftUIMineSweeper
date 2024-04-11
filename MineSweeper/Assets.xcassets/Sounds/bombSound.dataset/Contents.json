@@ -1,0 +1,13 @@
+{
+  "data" : [
+    {
+      "filename" : "mixkit-8-bit-bomb-explosion-2811.wav",
+      "idiom" : "universal",
+      "universal-type-identifier" : "com.microsoft.waveform-audio"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
