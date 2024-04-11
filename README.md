@@ -14,7 +14,5 @@ Future plans:
 
 Enjoy! :)
 
-Here is a sneak peak!
-
-https://github.com/cynicae/SwiftUIMineSweeper/assets/104155601/0bacbdbc-9b31-4385-adb7-69486573eebf
+https://github.com/cynicae/SwiftUIMineSweeper/assets/104155601/cc0b51cd-2d7f-4f83-a0f8-f4f4f2d28876
 
