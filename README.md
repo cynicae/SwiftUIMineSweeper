@@ -16,5 +16,5 @@ Enjoy! :)
 
 Here is a sneak peak!
 
-<img width="504" alt="Screenshot 2024-04-11 at 10 03 45 AM" src="https://github.com/cynicae/SwiftUIMineSweeper/assets/104155601/69ec79a0-9ae6-443b-b053-aaf2366a1269">
+https://github.com/cynicae/SwiftUIMineSweeper/assets/104155601/0bacbdbc-9b31-4385-adb7-69486573eebf
 
